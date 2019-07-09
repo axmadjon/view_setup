@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="vs_toolbar" type="id"/>
+    <item name="vs_toolbar_background" type="id"/>
+    <item name="vs_content" type="id"/>
+    <item name="vs_edit_text" type="id"/>
+
+    <item name="test_text_view" type="id"/>
+
+</resources>
