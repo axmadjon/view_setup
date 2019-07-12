@@ -1,5 +1,3 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
-
 package uz.mold.view_setup.widget
 
 import android.content.Context
@@ -7,17 +5,115 @@ import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import uz.mold.view_setup.R
+import uz.mold.view_setup.UI
 import uz.mold.view_setup.VS
+import uz.mold.view_setup.setup.ToolbarAction
 
 class UToolbar : Toolbar {
+
+    private var menuActions: MutableList<ToolbarAction> = mutableListOf()
+    private var menuIdSeq: Int = 0
+
 
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+    private fun getMenus() = menuActions
+    /**
+     * UToolbar add menu
+     *
+     * @param title is menu title. Type String or Int (@StringResourse) CharSequence
+     * @param iconResourse is menu icon
+     * @param command is menu click action
+     * @param isSubMenu is menu
+     * @param view is toolbar menu view
+     *
+     * @return UToolbar
+     * */
+    fun addMenu(
+        title: Any,
+        iconResourse: Int = -1,
+        command: (() -> Unit)? = null,
+        isSubMenu: Boolean = false,
+        view: View? = null
+    ): UToolbar {
+        getMenus().add(
+            ToolbarAction(
+                title = title,
+                iconResId = iconResourse,
+                command = command,
+                submenu = isSubMenu,
+                view = view
+            )
+        )
+        return this
+    }
+
+    /**UToolbar add menu
+     *
+     * @param toolbarAction is Toolbar item menu
+     *
+     * @return UToolbar
+     * */
+    fun addMenu(toolbarAction: ToolbarAction): UToolbar {
+        getMenus().add(toolbarAction)
+        return this
+    }
+
+    fun create(): UToolbar {
+        val menu = menu
+        menu.clear()
+        if (!hasMoldActionMenus()) return this
+
+        for (m in menuActions) {
+            if (m.id == 0) {
+                m.id = menuIdSeq++
+            }
+            val title: CharSequence = when (m.title) {
+                is Int -> context.getString(m.title)
+                is CharSequence -> m.title
+                is String -> m.title
+                else -> throw UnsupportedOperationException("text is not Int(String Resource) or CharSequence")
+            }
+            if (m.submenu) {
+                menu.addSubMenu(Menu.NONE, m.id, Menu.NONE, title)
+                continue
+            }
+            val menuItem = menu.add(Menu.NONE, m.id, Menu.NONE, title)
+            if (m.view != null) {
+                menuItem.actionView = m.view
+            } else {
+                if (m.iconResId != -1)
+                    menuItem.icon = UI.changeDrawableColor(
+                        context,
+                        m.iconResId,
+                        R.color.toolbar_icon_color_silver_dark
+                    )
+            }
+            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        }
+        setOnMenuItemClickListener { menuItem ->
+            val id = menuItem.itemId
+            for (m in menuActions) {
+                if (m.id == id && m.command != null) {
+                    m.command.invoke()
+                    return@setOnMenuItemClickListener true
+                }
+            }
+            false
+        }
+        return this
+    }
+
+    private fun hasMoldActionMenus() = menuActions.isNotEmpty()
 
     fun setViewId(id: Int): UToolbar {
         if (id != -1) {
