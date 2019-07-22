@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ViewSetup</string>
+    <string name="sub_menu">Sub menu</string>
 </resources>

@@ -33,7 +33,11 @@ class ULinearLayout : LinearLayout {
         return this
     }
 
-
+    /**
+     * create fun return self
+     *
+     * @return ULinearLayout
+     * */
     fun create(): View = this
 
     companion object {

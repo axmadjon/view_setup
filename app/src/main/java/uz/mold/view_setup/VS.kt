@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import uz.mold.collection.MyArray
 import uz.mold.view_setup.variable.TextValue
+import uz.mold.view_setup.variable.UTab
 import uz.mold.view_setup.variable.ValueBoolean
 import uz.mold.view_setup.variable.ValueSpinner
 import uz.mold.view_setup.widget.*
@@ -218,8 +219,8 @@ object VS {
      *
      * @return UButton child Button
      */
-    fun UButton(content: Any, text: Any? = null, command: ((UButton) -> Unit)?)
-            : UButton = UButton.create(content = content, text = text, command = command)
+    fun UButton(content: Any, id: Int = -1, text: Any? = null, command: ((UButton) -> Unit)?)
+            : UButton = UButton.create(content = content, id = id, text = text, command = command)
 
     /**
      * Material {@link EditText}
@@ -233,10 +234,8 @@ object VS {
      * @param rightIconRes is view right icon
      * @param leftIconRes is view left icon
      * @param gravity is view gravity
-     * @param touchListener is view touch action listener
+     * @param onTouchUpListener is view touch action listener
      * @param layoutParams is view layoutParams
-     * @param height is view height
-     * @param width is view width
      *
      * @return UEditText child EditText
      */
@@ -248,13 +247,11 @@ object VS {
         inputType: Int = -1,
         hint: Any? = null,
         backgroundRes: Int = -1,
-        rightIconRes: Int = 0,
-        leftIconRes: Int = 0,
+        rightIconRes: Int = -1,
+        leftIconRes: Int = -1,
         gravity: Int = -1,
-        touchListener: ((View) -> Unit)? = null,
-        layoutParams: ViewGroup.LayoutParams? = null,
-        height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-        width: Int = ViewGroup.LayoutParams.WRAP_CONTENT
+        onTouchUpListener: ((View) -> Unit)? = null,
+        layoutParams: ViewGroup.LayoutParams? = null
     ): UEditText = UEditText.create(
         content = content,
         id = id,
@@ -266,28 +263,27 @@ object VS {
         rightIconRes = rightIconRes,
         leftIconRes = leftIconRes,
         gravity = gravity,
-        touchListener = touchListener,
-        layoutParams = layoutParams,
-        height = height,
-        width = width
+        onTouchUpListener = onTouchUpListener,
+        layoutParams = layoutParams
     )
 
     /**
-     * Material {@link UInputEditTextLayout}
+     * Material {@link UTextInputLayout}
      *
      * @param content is Activity or Fragment
      * @param id is view unique resource id
      * @param childs is  UEditText
      *
-     * @return UInputEditTextLayout child InputEditTextLayout
+     * @return UTextInputLayout child InputEditTextLayout
      */
-    fun UInputEditTextLayout(content: Any, id: Int = -1, childs: UEditText): UInputEditTextLayout =
-        UInputEditTextLayout.create(content = content, resId = id)
+    fun UInputEditTextLayout(content: Any, id: Int = -1, childs: UEditText): UTextInputLayout =
+        UTextInputLayout.create(content = content, resId = id)
             .addChild(childs)
 
 
     /**
-     * Material {@link InputEditTextLayout With EditText}
+     * Material {@link UInputEditText With EditText}
+     * all @params for child view UEditText
      *
      * @param content is Activity or Fragment
      * @param id is view unique resource id
@@ -298,10 +294,8 @@ object VS {
      * @param rightIconRes is view right icon
      * @param leftIconRes is view left icon
      * @param gravity is view gravity
-     * @param touchListener is view touch action listener
+     * @param onTouchUpListener is view touch action listener
      * @param layoutParams is view layoutParams
-     * @param height is view height
-     * @param width is view width
      *
      * @return UEditText child EditText
      */
@@ -313,14 +307,12 @@ object VS {
         inputType: Int = -1,
         hint: Any? = null,
         backgroundRes: Int = -1,
-        rightIconRes: Int = 0,
-        leftIconRes: Int = 0,
+        rightIconRes: Int = -1,
+        leftIconRes: Int = -1,
         gravity: Int = -1,
-        touchListener: ((View) -> Unit)? = null,
-        layoutParams: ViewGroup.LayoutParams? = null,
-        height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-        width: Int = ViewGroup.LayoutParams.WRAP_CONTENT
-    ): UInputEditTextLayout = UInputEditTextLayout.UInputEditText(
+        onTouchUpListener: ((View) -> Unit)? = null,
+        layoutParams: ViewGroup.LayoutParams? = null
+    ): UTextInputLayout = UTextInputLayout.UInputEditText(
         content = content,
         id = id,
         variable = variable,
@@ -331,10 +323,8 @@ object VS {
         rightIconRes = rightIconRes,
         leftIconRes = leftIconRes,
         gravity = gravity,
-        touchListener = touchListener,
-        layoutParams = layoutParams,
-        height = height,
-        width = width
+        onTouchUpListener = onTouchUpListener,
+        layoutParams = layoutParams
     )
 
 
@@ -343,8 +333,7 @@ object VS {
      *
      * @param content is Activity or Fragment
      * @param resId is view unique resource id
-     * @param width is view width
-     * @param height is view height
+     * @param layoutParams Layout Paramas  child ViewGroup.LayoutParams
      * @param src is Int(ResourceId) or String or Bitmap image src
      * @param command is view click action listener
      * @param scaleType is image view scaleType
@@ -355,24 +344,23 @@ object VS {
     fun UImageView(
         content: Any,
         resId: Int = -1,
-        width: Int = 0,
-        height: Int = 0,
         src: Any? = null,
         command: (() -> Unit)? = null,
-        scaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_CROP,
-        dowloandErrorImageRec: Int = 0,
-        dowloandPlaceHolderImageRec: Int = 0
+        scaleType: ImageView.ScaleType? = null,
+        dowloandErrorImageRec: Int = -1,
+        dowloandPlaceHolderImageRec: Int = -1,
+        layoutParams: ViewGroup.LayoutParams? = null
     ): UImageView =
         UImageView.create(
             content = content,
             resId = resId,
-            width = width,
-            height = height,
             src = src,
             command = command,
             scaleType = scaleType,
             dowloandPlaceHolderImageRec = dowloandPlaceHolderImageRec,
-            dowloandErrorImageRec = dowloandErrorImageRec
+            dowloandErrorImageRec = dowloandErrorImageRec,
+            layoutParams = layoutParams
+
         )
 
     /**
@@ -392,27 +380,24 @@ object VS {
      *
      * @param content is Activity or Fragment
      * @param id is view unique resource id
-     * @param height is view Height
-     * @param width is view width=
      * @param selectedListener tabLayout tab select action listener
      * @param tabItems is tab layout tab items
+     * @param layoutParams Layout Paramas  child ViewGroup.LayoutParams
      *
      * @return UTabLayout child TabLayout
      */
     fun UTabLayout(
         content: Any,
         @IdRes id: Int = -1,
-        height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-        width: Int = ViewGroup.LayoutParams.MATCH_PARENT,
         selectedListener: TabLayout.BaseOnTabSelectedListener<*>?,
-        tabItems: MyArray<String>? = null
+        tabItems: MyArray<UTab>? = null,
+        layoutParams: ViewGroup.LayoutParams? = null
     ): UTabLayout = UTabLayout.create(
         content = content,
         id = id,
-        height = height,
-        width = width,
         selectedListener = selectedListener,
-        tabItems = tabItems
+        tabItems = tabItems,
+        layoutParams = layoutParams
     )
 
     /**
@@ -420,27 +405,24 @@ object VS {
      *
      * @param content is Activity or Fragment
      * @param id is view unique resource id
-     * @param height is view Height
-     * @param width is view width
      * @param adapter is view pager items adapter
      * @param tabItems is tab layout tab items
+     * @param layoutParams Layout Paramas  child ViewGroup.LayoutParams
      *
      * @return UTabLayout child TabLayout
      */
     fun UTabLayoutWithViewPager(
         content: Any,
         @IdRes id: Int = -1,
-        height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-        width: Int = ViewGroup.LayoutParams.MATCH_PARENT,
         adapter: PagerAdapter? = null,
-        tabItems: MyArray<String>? = null
+        tabItems: MyArray<UTab>? = null,
+        layoutParams: ViewGroup.LayoutParams? = null
     ): UTabLayout = UTabLayout.Default(
         content = content,
         ids = id,
-        height = height,
-        width = width,
         tabItems = tabItems,
-        adapter = adapter
+        adapter = adapter,
+        layoutParams = layoutParams
     )
 
 
@@ -449,8 +431,7 @@ object VS {
      *
      * @param content is Activity or Fragment
      * @param ids is view unique resource id
-     * @param height is view Height
-     * @param width is view width
+     * @param layoutParams Layout Paramas  child ViewGroup.LayoutParams
      * @param adapter is view pager items adapter
      * @param changeListener view pager page change listener
      *
@@ -459,17 +440,16 @@ object VS {
     fun UViewPager(
         content: Any,
         @IdRes ids: Int = -1,
-        height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-        width: Int = ViewGroup.LayoutParams.MATCH_PARENT,
         adapter: PagerAdapter? = null,
-        changeListener: ViewPager.OnPageChangeListener? = null
+        changeListener: ViewPager.OnPageChangeListener? = null,
+        layoutParams: ViewGroup.LayoutParams? = null
     ): UViewPager = UViewPager.create(
         content = content,
         ids = ids,
-        height = height,
-        width = width,
         adapter = adapter,
-        changeListener = changeListener
+        changeListener = changeListener,
+        layoutParams = layoutParams
+
     )
 
     // -----------------------------------------------------------------------------------------------------------------

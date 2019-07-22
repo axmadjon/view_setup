@@ -28,7 +28,7 @@ class UNestedScrollView : NestedScrollView {
      *
      * @param childs is var arrays View's
      *
-     * @return this
+     * @return UNestedScrollView
      */
     fun addChild(vararg childs: View): UNestedScrollView {
         for (x in childs) super.addView(x)
@@ -37,7 +37,15 @@ class UNestedScrollView : NestedScrollView {
 
 
     companion object {
-
+        /**
+         * Material {@link NestedScrollView}
+         *
+         * @param content is Activity or Fragment
+         * @param id is view unique resource id
+         * @param layoutParams is ViewLayoutParams
+         *
+         * @return UNestedScrollView child NestedScrollView
+         */
         fun create(
             content: Any,
             id: Int = -1,

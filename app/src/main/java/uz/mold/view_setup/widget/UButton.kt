@@ -13,6 +13,13 @@ class UButton : AppCompatButton {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+    fun setViewId(id: Int): UButton {
+        if (id != -1) {
+            super.setId(id)
+        }
+        return this
+    }
+
     /**
      * UButton set text
      *
@@ -56,10 +63,11 @@ class UButton : AppCompatButton {
          */
         fun create(
             content: Any,
+            id: Int = -1,
             text: Any? = null,
             command: ((UButton) -> Unit)?
         ): UButton {
-            val view = UButton(VS.castToContext(content))
+            val view = UButton(VS.castToContext(content)).setViewId(id)
             text?.let { view.setViewText(it) }
             command?.let { view.setViewOnClickListener(it) }
             return view

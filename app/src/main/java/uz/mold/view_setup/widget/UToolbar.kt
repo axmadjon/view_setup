@@ -17,6 +17,7 @@ import uz.mold.view_setup.setup.ToolbarAction
 class UToolbar : Toolbar {
 
     private var menuActions: MutableList<ToolbarAction> = mutableListOf()
+
     private var menuIdSeq: Int = 0
 
 
@@ -26,7 +27,6 @@ class UToolbar : Toolbar {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private fun getMenus() = menuActions
     /**
      * UToolbar add menu
      *
@@ -45,7 +45,7 @@ class UToolbar : Toolbar {
         isSubMenu: Boolean = false,
         view: View? = null
     ): UToolbar {
-        getMenus().add(
+        menuActions.add(
             ToolbarAction(
                 title = title,
                 iconResId = iconResourse,
@@ -64,7 +64,7 @@ class UToolbar : Toolbar {
      * @return UToolbar
      * */
     fun addMenu(toolbarAction: ToolbarAction): UToolbar {
-        getMenus().add(toolbarAction)
+        menuActions.add(toolbarAction)
         return this
     }
 
@@ -154,11 +154,25 @@ class UToolbar : Toolbar {
         return this
     }
 
+    /**
+     * set layoutParams to view
+     *
+     * @param params LayoutParams child ViewGroup.LayoutParams
+     *
+     * @return UToolbar
+     * */
     fun setViewLayoutParams(params: ViewGroup.LayoutParams): UToolbar {
         super.setLayoutParams(params)
         return this
     }
 
+    /**
+     * set title to toolbar
+     *
+     * @param text  is Int(ResourceId) or CharSequence
+     *
+     * @return UToolbar
+     * */
     fun setViewTitle(text: Any): UToolbar {
         when (text) {
             is Int -> super.setTitle(text)
@@ -167,6 +181,13 @@ class UToolbar : Toolbar {
         return this
     }
 
+    /**
+     * set subTitle to toolbar
+     *
+     * @param text  is Int(ResourceId) or CharSequence
+     *
+     * @return UToolbar
+     * */
     fun setViewSubtitle(text: Any): UToolbar {
         when (text) {
             is Int -> super.setSubtitle(text)
@@ -195,6 +216,19 @@ class UToolbar : Toolbar {
             return param
         }
 
+        /**
+         * create UToolbar
+         *
+         * @param content is Activity or Fragment
+         * @param id is view unique resource id
+         * @param title is Int(ResourceId), CharSequence
+         * @param subtitle is Int(ResourceId), CharSequence
+         * @param layoutParams ViewGroup.LayoutParams
+         * @param navigationIcon is NavigationIcon
+         * @param onNavigationClick is Click action listener
+         *
+         * @return UToolbar
+         */
         fun create(
             content: Any,
             id: Int = -1,

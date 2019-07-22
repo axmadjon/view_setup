@@ -20,6 +20,13 @@ class UTextView : AppCompatTextView {
         return this
     }
 
+    /**
+     * set text to textView
+     *
+     * @param text  is Int(ResourceId) , CharSequence or String
+     *
+     * @return UTextView
+     * */
     fun setViewText(text: Any? = null): UTextView {
         val str: CharSequence = when (text ?: return this) {
             is Int -> context.getString(text as Int)
@@ -34,7 +41,15 @@ class UTextView : AppCompatTextView {
     }
 
     companion object {
-
+        /**
+         * create UTextView
+         *
+         * @param content is Activity or Fragment
+         * @param id is view unique resource id
+         * @param text is Int(ResourceId), CharSequence or String
+         *
+         * @return UTextView
+         */
         fun create(content: Any, id: Int = -1, text: Any? = null): UTextView =
             UTextView(context = VS.castToContext(content))
                 .setViewId(id)

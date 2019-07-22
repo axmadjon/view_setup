@@ -8,8 +8,13 @@ import uz.mold.view_setup.VS
 import uz.mold.view_setup.setup.Model
 import uz.mold.view_setup.variable.ValueBoolean
 
+/**
+ * USwitch view child SwitchCompat
+ * */
 class USwitch : SwitchCompat {
-
+    /**
+     * @param model  uSwitch View model
+     * */
     val model: Model? get() = UI.getModel(this)
 
     constructor(context: Context) : super(context)
@@ -18,6 +23,13 @@ class USwitch : SwitchCompat {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+    /**
+     *bind func bind value to the view
+     *
+     * @param value  BooleanValue
+     *
+     * @return USwitch
+     * */
     fun bind(value: ValueBoolean): USwitch {
         UI.bind(this, value)
         return this
@@ -32,6 +44,15 @@ class USwitch : SwitchCompat {
 
     companion object {
 
+        /**
+         * create USwitch
+         *
+         * @param content is Context, Fragment or Activity
+         * @param resId resource id
+         * @param value is ValueBoolean default is null
+         *
+         * @return USwitch
+         */
         fun create(
             content: Any,
             resId: Int = -1,

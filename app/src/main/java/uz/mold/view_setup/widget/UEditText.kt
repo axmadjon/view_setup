@@ -31,18 +31,39 @@ class UEditText : AppCompatEditText {
         return this
     }
 
+    /**
+     * set Lines
+     *
+     * @param lines is lines count
+     *
+     * @return UEditText
+     * */
     fun setViewLines(lines: Int): UEditText {
         if (lines != -1)
             this.setLines(lines)
         return this
     }
 
+    /**
+     * set inputType
+     *
+     * @param type is input type
+     *
+     * @return UEditText
+     * */
     fun setViewInputType(type: Int): UEditText {
         if (type != -1)
             this.inputType = type
         return this
     }
 
+    /**
+     * set hint
+     *
+     * @param hint is Int(ResourceId), CharSequence or String
+     *
+     * @return UEditText
+     * */
     fun setViewHint(hint: Any? = null): UEditText {
         val str: CharSequence = when (hint ?: return this) {
             is Int -> context.getString(hint as Int)
@@ -50,43 +71,83 @@ class UEditText : AppCompatEditText {
             is String -> hint as String
             else -> throw UnsupportedOperationException("text is not Int(String Resource) or CharSequence")
         }
-
         this.hint = str
         return this
     }
 
 
-    fun setCompoundDrawablesWithIntrinsicBounds(leftIconRes: Int, rightIconRes: Int): UEditText {
-        this.setCompoundDrawablesWithIntrinsicBounds(leftIconRes, 0, rightIconRes, 0)
+    /**
+     * set Left or right icon to uEditText
+     *
+     * @param leftIconRes is icon resource
+     * @param rightIconRes is icon resource
+     *
+     * @return UEditText
+     * */
+    fun setCompoundDrawablesWithIntrinsicBounds(leftIconRes: Int = -1, rightIconRes: Int = -1): UEditText {
+        this.setCompoundDrawablesWithIntrinsicBounds(
+            if (leftIconRes == -1) 0 else leftIconRes,
+            0,
+            if (rightIconRes == -1) 0 else rightIconRes,
+            0
+        )
         return this
     }
 
-    fun setViewBackground(backgroundRes: Int): UEditText {
+    /**
+     * set background resource  to uEditText
+     *
+     * @param backgroundRes is background resource
+     *
+     * @return UEditText
+     * */
+    fun setViewBackgroundResource(backgroundRes: Int): UEditText {
         if (backgroundRes != -1)
             this.setBackgroundResource(backgroundRes)
         return this
     }
 
+    /**
+     * set gravity
+     *
+     * @param gravity is gravity
+     *
+     * @return UEditText
+     * */
     fun setViewGravity(gravity: Int): UEditText {
         if (gravity != -1)
             this.gravity = gravity
         return this
     }
 
+    /**
+     * set OnTouchUpListener
+     *
+     * @param onTouchUpListener is OnTouchUpListener acrion listener
+     *
+     * @return UEditText
+     * */
     @SuppressLint("ClickableViewAccessibility")
-    fun setOnTouchListene(touchListener: (View) -> Unit): UEditText {
+    fun setViewOnTouchUpListener(onTouchUpListener: (View) -> Unit): UEditText {
 
         this.setOnLongClickListener(null)
         this.setOnKeyListener(null)
         this.setOnTouchListener { v, e ->
             if (e.action == MotionEvent.ACTION_UP) {
-                touchListener.invoke(v)
+                onTouchUpListener.invoke(v)
             }
             return@setOnTouchListener false
         }
         return this
     }
 
+    /**
+     * set layoutParams to view
+     *
+     * @param params LayoutParams child ViewGroup.LayoutParams
+     *
+     * @return UEditText
+     * */
     fun setLayoutParamas(layoutParams: ViewGroup.LayoutParams? = null): UEditText {
         this.layoutParams = layoutParams ?: return this
         return this
@@ -106,6 +167,23 @@ class UEditText : AppCompatEditText {
 
     companion object {
 
+        /**
+         * Material {@link EditText}
+         *
+         * @param content is Activity or Fragment
+         * @param id is view unique resource id
+         * @param variable is TextValue
+         * @param lines is editText lines
+         * @param hint is Int(ResourceId) or CharSequence
+         * @param backgroundRes is Int(ResourceId) editText background resourse
+         * @param rightIconRes is view right icon
+         * @param leftIconRes is view left icon
+         * @param gravity is view gravity
+         * @param onTouchUpListener is view touch action listener
+         * @param layoutParams is view layoutParams
+         *
+         * @return UEditText child EditText
+         */
         fun create(
             content: Any,
             id: Int = -1,
@@ -114,25 +192,25 @@ class UEditText : AppCompatEditText {
             inputType: Int = -1,
             hint: Any? = null,
             backgroundRes: Int = -1,
-            rightIconRes: Int = 0,
-            leftIconRes: Int = 0,
+            rightIconRes: Int = -1,
+            leftIconRes: Int = -1,
             gravity: Int = -1,
-            touchListener: ((View) -> Unit)? = null,
-            layoutParams: ViewGroup.LayoutParams? = null,
-            height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-            width: Int = ViewGroup.LayoutParams.WRAP_CONTENT
+            onTouchUpListener: ((View) -> Unit)? = null,
+            layoutParams: ViewGroup.LayoutParams? = null
         ): UEditText {
             val view = UEditText(context = VS.castToContext(content))
                 .setViewId(id)
                 .setViewLines(lines)
                 .setViewInputType(inputType)
-                .setViewBackground(backgroundRes)
+                .setViewBackgroundResource(backgroundRes)
                 .setCompoundDrawablesWithIntrinsicBounds(leftIconRes, rightIconRes)
                 .setViewGravity(gravity)
 
-            view.setLayoutParamas(layoutParams ?: ViewGroup.LayoutParams(width, height))
+            if (layoutParams != null)
+                view.setLayoutParamas(layoutParams)
+
             hint?.let { view.setViewHint(it) }
-            touchListener?.let { view.setOnTouchListene(it) }
+            onTouchUpListener?.let { view.setViewOnTouchUpListener(it) }
 
             if (variable != null) {
                 UI.bind(view, variable)

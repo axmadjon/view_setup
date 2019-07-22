@@ -11,7 +11,11 @@ import uz.mold.view_setup.R
 import uz.mold.view_setup.VS
 import uz.mold.view_setup.variable.TextValue
 
-class UInputEditTextLayout : TextInputLayout {
+/**
+ * UTextInputLayout child TextInputLayout
+ * this is material design component
+ * */
+class UTextInputLayout : TextInputLayout {
 
 
     constructor(context: Context) : super(context)
@@ -20,20 +24,35 @@ class UInputEditTextLayout : TextInputLayout {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    fun addChild(child: UEditText): UInputEditTextLayout {
+    /**
+     * fun add child views. the views child EditText
+     *
+     * @param child child EditText
+     *
+     * @return UTextInputLayout
+     * */
+    fun addChild(child: UEditText): UTextInputLayout {
         super.addView(child)
         return this
     }
 
 
-    fun setViewId(id: Int): UInputEditTextLayout {
+    fun setViewId(id: Int): UTextInputLayout {
         if (id != -1) {
             super.setId(id)
         }
         return this
     }
 
-    fun setup(line: Int, gravity: Int): UInputEditTextLayout {
+    /**
+     * setup function set view settings
+     *
+     * @param line child view lines
+     * @param gravity child view gravity
+     *
+     * @return UTextInputLayout
+     * */
+    fun setup(line: Int, gravity: Int): UTextInputLayout {
         if (line > 0) {
             setChildLine(line)
         }
@@ -45,14 +64,28 @@ class UInputEditTextLayout : TextInputLayout {
         return this
     }
 
-    fun setChildLine(line: Int): UInputEditTextLayout {
-        val frame = getChildAt(0) as? FrameLayout ?: return this
+    /**
+     *function set first Child View Lines
+     *
+     *@param line lines child view
+     *
+     * @return UTextInputLayout
+     * */
+    fun setChildLine(line: Int): UTextInputLayout {
+        val frame = getChildAt(0)as? FrameLayout ?: return this
         val childAt = frame.getChildAt(0) as? UEditText ?: return this
         childAt.setViewLines(line)
         return this
     }
 
-    fun setChildGravity(gravity: Int): UInputEditTextLayout {
+    /**
+     *function set first Child View gravity
+     *
+     * @param gravity lines child view
+     *
+     * @return UTextInputLayout
+     * */
+    fun setChildGravity(gravity: Int): UTextInputLayout {
         val frame = getChildAt(0) as? FrameLayout ?: return this
         val childAt = frame.getChildAt(0) as? UEditText ?: return this
         childAt.gravity = gravity
@@ -61,18 +94,29 @@ class UInputEditTextLayout : TextInputLayout {
 
     companion object {
 
+        /**
+         * create UTextInputLayout
+         *
+         * @param content is Activity or Fragment
+         * @param resId is view unique resource id
+         *
+         * @return UTextInputLayout
+         */
         fun create(
             content: Any,
             resId: Int = -1
-        ): UInputEditTextLayout {
+        ): UTextInputLayout {
             val view = LayoutInflater.from(VS.castToContext(content)).inflate(
                 R.layout.mold_input_edittext,
                 null
-            ) as UInputEditTextLayout
+            ) as UTextInputLayout
             view.setViewId(resId)
             return view
         }
 
+        /**
+         * this all @params for child view UEditText.
+         * */
         fun UInputEditText(
             content: Any,
             id: Int = -1,
@@ -81,18 +125,16 @@ class UInputEditTextLayout : TextInputLayout {
             inputType: Int = -1,
             hint: Any? = null,
             backgroundRes: Int = -1,
-            rightIconRes: Int = 0,
-            leftIconRes: Int = 0,
+            rightIconRes: Int = -1,
+            leftIconRes: Int = -1,
             gravity: Int = -1,
-            touchListener: ((View) -> Unit)? = null,
-            layoutParams: ViewGroup.LayoutParams? = null,
-            height: Int = ViewGroup.LayoutParams.WRAP_CONTENT,
-            width: Int = ViewGroup.LayoutParams.WRAP_CONTENT
-        ): UInputEditTextLayout {
+            onTouchUpListener: ((View) -> Unit)? = null,
+            layoutParams: ViewGroup.LayoutParams? = null
+        ): UTextInputLayout {
             val view = LayoutInflater.from(VS.castToContext(content)).inflate(
                 R.layout.mold_input_edittext,
                 null
-            ) as UInputEditTextLayout
+            ) as UTextInputLayout
             val editText = VS.UEditText(
                 content = content,
                 id = id,
@@ -104,9 +146,8 @@ class UInputEditTextLayout : TextInputLayout {
                 rightIconRes = rightIconRes,
                 leftIconRes = leftIconRes,
                 gravity = gravity,
-                touchListener = touchListener,
-                layoutParams = layoutParams,
-                width = width, height = height
+                onTouchUpListener = onTouchUpListener,
+                layoutParams = layoutParams
             )
             view.addChild(editText)
             return view

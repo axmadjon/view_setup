@@ -23,18 +23,41 @@ class URecyclerView : RecyclerView {
         return this
     }
 
+    /**
+     * set layoutManager to recyclerView
+     *
+     * @param spanCount  count span
+     *
+     * @return URecyclerView
+     * */
     fun setGridLayoutManager(spanCount: Int): URecyclerView {
         super.setLayoutManager(GridLayoutManager(context, spanCount))
         return this
     }
 
+    /**
+     * set adapter to recyclerView
+     *
+     * @param  adapter  is child Adapter
+     *
+     * @return URecyclerView
+     * */
     fun setRecyclerAdapter(adapter: Adapter<*>): URecyclerView {
         setAdapter(adapter)
         return this
     }
 
     companion object {
-
+        /**
+         * create URecyclerView
+         *
+         * @param content is Activity or Fragment
+         * @param id is view unique resource id
+         * @param adapter is RecyclerView.Adapter
+         * @param layoutParams is ViewLayoutParams
+         *
+         * @return URecyclerView child RecyclerView
+         */
         fun create(
             content: Any,
             id: Int = -1,
